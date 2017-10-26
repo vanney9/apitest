@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>iris</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    #addData {
+      vertical-align: top;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <button id="addData" type="button" title="add data">add data</button>
+    <p>count: <span class="count"></span></p>
+  </div>
+  <script src="./lib/canvas-getTransform.js"></script>
+  <script src="./lib/d3.v4.js"></script>
+  <script src="./lib/d3-svg2canvas.js"></script>
+  <script src="./src/plot-umd.js"></script>
+  <script>
+    const color = ['red', 'blue', 'green'];
+    const range = {
+      x: [0, 7],
+      y: [0, 3]
+    }
+    const data = [];
+    for (let i = 0; i < 50; i++) {
+      data.push(generateData(range, color));
+    }
+
+    function drawing() {
+      d3.select('.count').text(data.length);
+      Plot.iris(data, '.container', {
+        range: range
+      })
+    }
+    // start drawing
+    drawing(); 
+
+    const addCount = 2000;
+    document.getElementById('addData').addEventListener('click', function (d) {
+      for (let i = 0; i < addCount; i++) {
+        data.push(generateData(range, color));
+      }
+      drawing();
+    }, false)
+
+    function generateData(range, color) {
+      return {
+        x: getRandom.apply(null, range.x),
+        y: getRandom.apply(null, range.y),
+        r: 5,
+        color: color[Math.floor(getRandom.apply(null, [0, color.length]))]
+      }
+    }
+
+    function getRandom(min, max) {
+      return Math.random() * (max - min) + min;
+    }
+  </script>
+</body>
+
+</html>

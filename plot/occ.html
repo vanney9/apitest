@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>occurrence canvas</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    ul {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    #container {
+      position: relative;
+    }
+
+    .tip {
+      position: absolute;
+      background-color: #ffffff;
+      border: 1px solid #e2e2e2;
+      font-size: 12px;
+      padding: 10px 8px;
+      font-weight: lighter;
+    }
+
+    .tip .title {
+      color: #34afee;
+      font-weight: normal;
+    }
+
+    #addData {
+      vertical-align: top;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="container">
+    <button id="addData" type="button" title="add data">add data</button>
+  </div>
+  <script type="text/javascript" src="./lib/d3.min.js"></script>
+  <script type="text/javascript">
+    const xAxisLabel = [];
+    const yAxisLabel = [];
+    const range = [0, 15];
+    const color = ["#f0ecf5", "#805aa9", "#ffd2a6", "#ff7f00", "#fff5f5", "#fb9a99", "#b8deb5", "#33a02c", "#79aed2",
+      "#408cbf"
+    ];
+    const svgSize = {
+      w: 1200,
+      h: 800
+    };
+    const svgMargin = [100, 100];
+    let unitSize = { // unit block size
+      width: 8,
+      height: 8
+    };
+    let tmpUnitSize = {};
+    let tmpGap = gap = 1;
+    let count = 50;
+    document.getElementById('addData').addEventListener('click', function (d) {
+      count += 50;
+      plot(count);
+    }, false)
+    plot(count);
+    function plot(n) {
+      tmpUnitSize = JSON.parse(JSON.stringify(unitSize));
+      tmpGap = gap;
+      for (var i = 0; i < n; i++) {
+        xAxisLabel.push('a' + i);
+        yAxisLabel.push('b' + i);
+      }
+      const contentSize = {
+        width: xAxisLabel.length * unitSize.width + (xAxisLabel.length - 1) * gap,
+        height: yAxisLabel.length * unitSize.height + (yAxisLabel.length - 1) * gap
+      };
+      const margin = {
+        horizontal: svgMargin[0],
+        vertical: svgMargin[1]
+      };
+      const canvasSize = {
+        width: contentSize.width + 2 * margin.horizontal,
+        height: contentSize.height + 2 * margin.vertical
+      }
+      let recordCollision = {};
+      d3.select('#container canvas').remove();
+      const canvas = d3.select('#container')
+        .append('canvas')
+        .attr('class', 'wrapper')
+        .attr('width', canvasSize.width * window.devicePixelRatio)
+        .attr('height', canvasSize.height * window.devicePixelRatio)
+        .style('width', canvasSize.width + 'px')
+        .style('height', canvasSize.height + 'px')
+        .on('mousemove', function () {
+          const collision = detectCollision(blocks, d3.event.clientX, d3.event.clientY);
+          if (!collision) {
+            d3.select('.tip').remove();
+            return false;
+          }
+          if (JSON.stringify(recordCollision) === JSON.stringify(collision)) {
+            return false;
+          } else {
+            recordCollision = collision;
+            d3.select('.tip').remove();
+          }
+          d3.select('#container')
+            .append('div')
+            .attr('class', 'tip')
+            .style('top', d3.event.clientY - 20 + 'px')
+            .style('left', d3.event.clientX + 20 + 'px')
+            .html(generateTip(collision.names, collision.count))
+        })
+        .call(d3.zoom().on('zoom', zoomed))
+        .node();
+      // record axis translate
+      let axisTrans = {
+        x: 0,
+        y: 0,
+        k: 1
+      }
+      // get context
+      if (!canvas.getContext) {
+        throw new Error('can not support canvas');
+      }
+      const ctx = canvas.getContext('2d');
+      // scale to fit retina
+      ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+
+      let blocks = [];
+      let tmpBlocks = [];
+      for (let x = 0; x < yAxisLabel.length; x++) {
+        for (let y = 0; y < xAxisLabel.length; y++) {
+          var count = blocks[y * yAxisLabel.length + x] ? blocks[y * yAxisLabel.length + x].count : Math.floor(Math.random() *
+            (range[1] - range[0])) + range[0];
+          blocks.push({
+            x: x,
+            y: y,
+            xCoord: y * (unitSize.width + gap),
+            yCoord: x * (unitSize.height + gap),
+            names: yAxisLabel[x] + ', ' + xAxisLabel[y],
+            // 对称分布
+            count: count,
+            color: getColor(x, y, count)
+          })
+        }
+      }
+      tmpBlocks = JSON.parse(JSON.stringify(blocks));
+
+      // draw content
+      draw(ctx);
+
+      function draw(ctx) {
+        ctx.clearRect(0, 0, canvasSize.width, canvasSize.height);
+        ctx.save();
+        ctx.translate(margin.horizontal, margin.vertical);
+        blocks.forEach(function (v, i) {
+          ctx.fillStyle = v.color;
+          ctx.fillRect(v.xCoord,
+            v.yCoord,
+            unitSize.width,
+            unitSize.height);
+        })
+        ctx.restore();
+
+        // clear blocks around
+        ctx.clearRect(0, 0, canvasSize.width, margin.vertical);
+        ctx.clearRect(canvasSize.width - margin.horizontal, 0, margin.horizontal, canvasSize.height);
+        ctx.clearRect(0, canvasSize.height - margin.vertical, canvasSize.width, margin.vertical);
+        ctx.clearRect(0, 0, margin.horizontal, canvasSize.height);
+
+        ctx.save();
+
+        ctx.translate(margin.horizontal, margin.vertical);
+        // add x axis
+        ctx.fillStyle = '#000000';
+        ctx.font = tmpUnitSize.width * 2 + 'px "PingFang SC"';
+        ctx.scale(0.5, 0.5);
+        ctx.save();
+        ctx.rotate(-Math.PI / 2);
+        xAxisLabel.forEach(function (v, i) {
+          ctx.fillText(v, 10, i * (unitSize.width + gap) * 2 + unitSize.width * 1.5 + axisTrans.x * 2 - (axisTrans.k -
+            1) * tmpUnitSize.width / 2);
+        })
+        // // add y axis
+        ctx.restore();
+        ctx.textAlign = 'end';
+        yAxisLabel.forEach(function (v, i) {
+          ctx.fillText(v, -10, i * (unitSize.height + gap) * 2 + unitSize.height * 1.5 + axisTrans.y * 2 - (
+            axisTrans
+            .k - 1) * tmpUnitSize.height / 2);
+        })
+        ctx.restore();
+        // clear axis
+        ctx.clearRect(0, 0, margin.horizontal, margin.vertical);
+        ctx.clearRect(canvasSize.width - margin.horizontal, 0, margin.horizontal, margin.vertical);
+        ctx.clearRect(0, canvasSize.height - margin.vertical, margin.horizontal, margin.vertical);
+        ctx.clearRect(canvasSize.width - margin.horizontal, canvasSize.height - margin.vertical, margin.horizontal,
+          margin.vertical);
+      }
+
+      //collision detection
+      function detectCollision(blocks, x, y) {
+        x = x - margin.horizontal;
+        y = y - margin.vertical;
+        // exceed the content return false
+        if (x < 0 ||
+          x > contentSize.width ||
+          y < 0 ||
+          y > contentSize.height
+        ) return false;
+        // collide block
+        for (let i = 0; i < blocks.length; i++) {
+          if (x >= blocks[i].xCoord &&
+            x <= blocks[i].xCoord + unitSize.width &&
+            y >= blocks[i].yCoord &&
+            y <= blocks[i].yCoord + unitSize.height
+          ) {
+            return blocks[i];
+          }
+        }
+        return false;
+      }
+
+      function zoomed() {
+        // console.log(d3.event.transform, blocks);
+        // change blocks coordinate when zoom
+        const transform = d3.event.transform;
+        blocks.forEach(function (v, i) {
+          v.xCoord = tmpBlocks[i].xCoord * transform.k + transform.x;
+          v.yCoord = tmpBlocks[i].yCoord * transform.k + transform.y;
+        })
+        scaleBlocks(transform.k);
+        scaleAxis(transform);
+        draw(ctx);
+      }
+
+      draw(ctx);
+
+      function scaleBlocks(ratio) {
+        unitSize.width = tmpUnitSize.width * ratio;
+        unitSize.height = tmpUnitSize.height * ratio;
+        gap = tmpGap * ratio;
+      }
+
+      function scaleAxis(transform) {
+        axisTrans.x = transform.x;
+        axisTrans.y = transform.y;
+        axisTrans.k = transform.k;
+      }
+
+      function generateTip(date, rate) {
+        return '<ul>' +
+          '<li><span class="title">names: </span>' + date + '</li>' +
+          '<li><span class="title">count: </span>' + rate + '</li>' +
+          '</ul>';
+      }
+
+      function getColor(x, y, count) {
+        if (count === 0) {
+          return '#fbfbfb';
+        } else if (x < 10 && y < 10) {
+          if (count < (range[0] + range[1]) / 2) return color[0];
+          return color[1];
+        } else if (x >= 10 && x < 20 && y >= 10 && y < 20) {
+          if (count < (range[0] + range[1]) / 2) return color[2];
+          return color[3];
+        } else if (x >= 20 && x < 30 && y >= 20 && y < 30) {
+          if (count < (range[0] + range[1]) / 2) return color[4];
+          return color[5];
+        } else if (x >= 30 && x < 40 && y >= 30 && y < 40) {
+          if (count < (range[0] + range[1]) / 2) return color[6];
+          return color[7];
+        } else if (x >= 40 && x < 50 && y >= 40 && y < 50) {
+          if (count < (range[0] + range[1]) / 2) return color[8];
+          return color[9];
+        } else {
+          return Math.random() < 0.05 ? '#e5e5e5' : '#fbfbfb';
+        }
+      }
+    }
+  </script>
+</body>
+
+</html>

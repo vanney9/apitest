@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title></title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body>
+  <div id="container">
+    <button id="addData" type="button" title="add data">add data</button>
+    <p>count:
+      <span class="count"></span>
+    </p>
+  </div>
+  <script src="./lib/pixi.js"></script>
+  <script src="./lib/d3.v4.js"></script>
+  <script>
+    const canvasSize = {
+      w: 800,
+      h: 800
+    };
+    const color = [0xff0000, 0x0000ff, 0x00ff00];
+    const range = {
+      x: [0, 7],
+      y: [0, 3]
+    };
+    const margin = {
+      h: 100,
+      v: 100
+    };
+    const contentSize = {
+      width: 600,
+      height: 600
+    };
+
+    const x = d3.scaleLinear()
+      .domain(range.x)
+      .range([0, contentSize.width]);
+
+    const y = d3.scaleLinear()
+      .domain(range.y)
+      .range([contentSize.height, 0]);
+    // get resolution
+    const resolution = window.devicePixelRatio;
+    // init renderer
+    var renderer = PIXI.autoDetectRenderer({
+      width: canvasSize.w,
+      height: canvasSize.h,
+      resolution,
+      antialias: true
+    });
+
+    const textures = color.map(function (v) {
+      const circle = new PIXI.Graphics();
+      circle.lineStyle(1, v);
+      circle.beginFill(v, 0.3);
+      circle.drawCircle(0, 0, 5);
+      circle.endFill();
+      return circle.generateCanvasTexture(resolution, resolution);
+    })
+    
+    document.getElementById('container').append(renderer.view);
+    // set for retina
+    renderer.view.style.width = canvasSize.w + 'px';
+    renderer.view.style.height = canvasSize.h + 'px';
+    // add containers
+    var stage = new PIXI.Container();
+    renderer.backgroundColor = 0xffffff;
+    // add 3 containers for content, x axis and y axis
+    const contentContainer = new PIXI.Container();
+    contentContainer.x = margin.h;
+    contentContainer.y = margin.v;
+    contentContainer.width = contentSize.width;
+    contentContainer.height = contentSize.height;
+    // contentContainer.interactiveChildren = true;
+    contentContainer.interactive = true;
+    // contentContainer.hitArea = new PIXI.Rectangle(0, 0, contentSize.width, contentSize.height);
+    // add event for container
+    // contentContainer
+    //   .on('pointerdown', onDragStart)
+    //   .on('pointerup', onDragEnd)
+    //   .on('pointerupoutside', onDragEnd)
+    //   .on('pointermove', onDragMove);
+
+    // function onDragStart(e) {
+    //   this.dragging = true;
+    //   this.prevPos = {
+    //     x: e.data.getLocalPosition(this).x,
+    //     y: e.data.getLocalPosition(this).y
+    //   }
+    // }
+
+    // function onDragMove(e) {
+    //   if (this.dragging) {
+    //     const pos = e.data.getLocalPosition(this);
+    //     this.children.forEach(function (v, i) {
+    //       v.position.x += (pos.x - this.prevPos.x);
+    //       v.position.y += (pos.y - this.prevPos.y);
+    //     }, this);
+    //     this.prevPos = {
+    //       x: pos.x,
+    //       y: pos.y
+    //     };
+    //     renderer.render(stage);
+    //   }
+    // }
+
+    // function onDragEnd(e) {
+    //   this.dragging = false;
+    // }
+    
+
+    const xAxisContainer = new PIXI.Container();
+    xAxisContainer.x = margin.h;
+    xAxisContainer.y = margin.v + contentSize.height;
+
+    const yAxisContainer = new PIXI.Container();
+    yAxisContainer.x = 0;
+    yAxisContainer.y = margin.v;
+
+    stage.addChild(contentContainer, xAxisContainer, yAxisContainer);
+
+    // add zoom via d3.js
+    d3.select(renderer.view)
+      .call(d3.zoom().on('zoom', zoom));
+    
+    function zoom() {
+      const transform = d3.event.transform;
+      contentContainer.children.forEach(function (v, i) {
+        v.scale.x = transform.k;
+        v.scale.y = transform.k;
+        v.position.x = v.oldPosX * transform.k + transform.x;
+        v.position.y = v.oldPosY * transform.k + transform.y;
+      })
+      renderer.render(stage);
+    }
+
+    // use rects to hide the content beyond the area
+    function addClear() {
+      const rects = new PIXI.Graphics();
+      rects.beginFill(0xffffff);
+      rects.drawRect(0, 0, canvasSize.w, margin.v);
+      rects.drawRect(0, 0, margin.h, canvasSize.h);
+      rects.drawRect(canvasSize.w - margin.h, 0, margin.h, canvasSize.h);
+      rects.drawRect(0, canvasSize.h - margin.v, canvasSize.w, margin.v);
+      rects.endFill();
+      stage.addChild(rects);
+    }
+
+    // add axis
+    function addAxis() {
+      const xAxisPos = d3.axisBottom(x).ticks(6)(d3.selection());
+      const yAxis = d3.axisLeft(y).ticks(6)(d3.selection());
+      // add x axis
+      drawXAxis(xAxisPos);
+
+    }
+
+    // draw x axis
+    function drawXAxis(pos) {
+      
+    }
+
+    // parse svg path 
+    function parseSvgPath(path) {
+      const pathType = /[MVH]/;
+      const operation = '';
+      const oList = [];
+      function parse(str) {
+        const index = str.search(pathType);
+        if (index !== -1) {
+          // match operator
+          if (index === 0) return parseSvgPath(str.slice(1));
+          // match operand
+          
+        }
+      }
+    }
+
+    // init 
+    function init() {
+      const data = [];
+      for (let i = 0; i < 100000; i++) {
+        data.push(generateData(range, color));
+      }
+
+      function drawing() {
+        d3.select('.count').text(data.length);
+        draw(data)
+      }
+      // start drawing
+      drawing();
+
+      const addCount = 10000;
+      document.getElementById('addData').addEventListener('click', function (d) {
+        for (let i = 0; i < addCount; i++) {
+          data.push(generateData(range, color));
+        }
+        drawing();
+      }, false)
+
+      function generateData(range, color) {
+        return {
+          x: round(x(getRandom.apply(null, range.x))),
+          y: round(y(getRandom.apply(null, range.y))),
+          r: 5,
+          color: color[Math.floor(getRandom.apply(null, [0, color.length]))]
+        }
+      }
+
+      function round(d) {
+        return d < 5 ? 5 : d > (contentSize.width - 5) ? contentSize.width - 5 : d;
+      }
+
+      function getRandom(min, max) {
+        return Math.random() * (max - min) + min;
+      }
+    }
+    // init data
+    init();
+
+    function draw(data) {
+      for (let i = 0; i < data.length; i++) {
+        const textureIndex = color.indexOf(data[i].color);
+        const circleSprite = new PIXI.Sprite(textures[textureIndex]);
+        circleSprite.anchor.set(0.5);
+        circleSprite.oldPosX = data[i].x;
+        circleSprite.oldPosY = data[i].y;
+        circleSprite.position.x = data[i].x;
+        circleSprite.position.y = data[i].y;
+        contentContainer.addChild(circleSprite);
+      }
+      addClear();
+      // addAxis();
+      renderer.render(stage);
+    }
+  </script>
+</body>
+
+</html>
