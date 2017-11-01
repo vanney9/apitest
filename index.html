@@ -1,12 +1,31 @@
 <!DOCTYPE html>
-	<head></head>
+	<head>
+		<meta charset="utf-8">
+	</head>
 	<body>
 		<h2>Geneplus API Document</h2>
 		<ul>
-			<li><a href="./home.html">首页</a></li>
-			<li><a href="./patientManagement.html">患者管理</a></li>
-			<li><a href="./clinicalCase.html">临床病例</a></li>
+			<li><a href="./base.html">医生，病人，报告</a></li>
+			<li><a href="./group.html">群组</a></li>
+			<li><a href="./research.html">科研项目</a></li>
 			<li><a href="./multicenter.html">多中心研究</a></li>
 		</ul>
+		<div>
+			<h4>数据库结构</h4>
+			<img src="./db.png" width=600/>
+			<p>数据库主要分成10个表</p>
+			<ul>
+				<li><b>Doctor</b>:医生基本信息</li>
+				<li><b>Patient</b>:病人基本信息</li>
+				<li><b>Report</b>:报告基本信息</li>
+				<li><b>Multicenter</b>:多中心研究基本信息</li>
+				<li><b>Group</b>:群组基本信息</li>
+				<li><b>Group_has_patient</b>:群组包含的病例信息</li>
+				<li><b>Group_has_report</b>:群组包含的样本信息</li>
+				<li><b>Research</b>:科研项目基本信息</li>
+				<li><b>Research_report</b>:科研项目包含的汇报信息</li>
+				<li><b>Research_sample</b>:科研项目包含的样本信息</li>
+			</ul>
+		</div>
 	</body>
 </html>
