@@ -6,22 +6,24 @@
 		<h2>Geneplus API Document</h2>
 		<ul>
 			<li><a href="./base.html">医生，病人，报告</a></li>
-			<li><a href="./group.html">群组</a></li>
 			<li><a href="./research.html">科研项目</a></li>
 			<li><a href="./multicenter.html">多中心研究</a></li>
 		</ul>
 		<div>
+			<h3 style="color: red;">注意</h3>
+			<p>每个API都是GET请求，通过时间戳来获取相应时间段的数据。每个GET请求会有2个参数：start_time 和 end_time。</p>
+			<p>比如： http://localhost/doctor?start_time=2017-03-04%2000:00:00&end_time=2017-03-05%2000:00:00 表示获取这个时间段内的所有信息</p>
+			<p style="color: red;">注：如果没有给start_time，则表示获取 end_time 之前的所有信息。第一次获取数据时不给 start_time</p>
+		</div>
+		<div>
 			<h4>数据库结构</h4>
 			<img src="./db.png" width=600/>
-			<p>数据库主要分成10个表</p>
+			<p>数据库主要分成7个表</p>
 			<ul>
 				<li><b>Doctor</b>:医生基本信息</li>
 				<li><b>Patient</b>:病人基本信息</li>
 				<li><b>Report</b>:报告基本信息</li>
 				<li><b>Multicenter</b>:多中心研究基本信息</li>
-				<li><b>Group</b>:群组基本信息</li>
-				<li><b>Group_has_patient</b>:群组包含的病例信息</li>
-				<li><b>Group_has_report</b>:群组包含的样本信息</li>
 				<li><b>Research</b>:科研项目基本信息</li>
 				<li><b>Research_report</b>:科研项目包含的汇报信息</li>
 				<li><b>Research_sample</b>:科研项目包含的样本信息</li>
