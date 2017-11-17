@@ -60,29 +60,48 @@
     "<span class="hljs-attribute">doctor_id</span>": <span class="hljs-value"><span class="hljs-number">1</span></span>,
     "<span class="hljs-attribute">add_time</span>": <span class="hljs-value"><span class="hljs-string">"2017-03-04 00:00:00"</span>
   </span>}
-]</code></pre><div style="height: 1px;"></div></div></div></div></div><div id="报告" class="resource"><h3 class="resource-heading">报告 <a href="#报告" class="permalink">&nbsp;&para;</a></h3><div id="报告-get" class="action get"><h4 class="action-heading"><div class="name">获取全部报告信息</div><a href="#报告-get" class="method get">GET</a><code class="uri">/report</code></h4><h4>Example URI</h4><div class="definition"><span class="method get">GET</span>&nbsp;<span class="uri"><span class="hostname">http://localhost</span>/report</span></div><div class="title"><strong>Response&nbsp;&nbsp;<code>200</code></strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span></code></pre><div style="height: 1px;"></div><h5>Body</h5><pre><code>[{
+]</code></pre><div style="height: 1px;"></div></div></div></div></div><div id="报告" class="resource"><h3 class="resource-heading">报告 <a href="#报告" class="permalink">&nbsp;&para;</a></h3><div id="报告-get" class="action get"><h4 class="action-heading"><div class="name">获取全部报告信息</div><a href="#报告-get" class="method get">GET</a><code class="uri">/report</code></h4><h4>Example URI</h4><div class="definition"><span class="method get">GET</span>&nbsp;<span class="uri"><span class="hostname">http://localhost</span>/report</span></div><div class="title"><strong>Response&nbsp;&nbsp;<code>200</code></strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span></code></pre><div style="height: 1px;"></div><h5>Body</h5><pre><code>[
+  {
     "<span class="hljs-attribute">id</span>": <span class="hljs-value"><span class="hljs-number">1</span></span>,
     "<span class="hljs-attribute">patient_id</span>": <span class="hljs-value"><span class="hljs-number">1</span></span>,
     "<span class="hljs-attribute">time</span>": <span class="hljs-value"><span class="hljs-string">"2017-03-04 00:00:00"</span></span>,
-    "<span class="hljs-attribute">product</span>": <span class="hljs-value"><span class="hljs-string">"OncoR"</span>;
-    <span class="hljs-string">"sampleID"</span>: <span class="hljs-string">"12XBD57"</span></span>,
+    "<span class="hljs-attribute">product</span>": <span class="hljs-value"><span class="hljs-string">"OncoR"</span></span>,
+    "<span class="hljs-attribute">sampleID</span>": <span class="hljs-value"><span class="hljs-string">"12XBD57"</span></span>,
     "<span class="hljs-attribute">disease</span>": <span class="hljs-value"><span class="hljs-string">"肠癌"</span></span>,
     "<span class="hljs-attribute">period</span>": <span class="hljs-value"><span class="hljs-string">"IV 期"</span></span>,
     "<span class="hljs-attribute">status</span>": <span class="hljs-value"><span class="hljs-string">"样本已入库"</span></span>,
-    "<span class="hljs-attribute">index</span>": <span class="hljs-value"><span class="hljs-string">"STM"</span></span>,
-    "<span class="hljs-attribute">factor</span>": <span class="hljs-value"><span class="hljs-string">"asr"</span>
-</span>}, {
+    "<span class="hljs-attribute">index</span>": <span class="hljs-value">[
+      {
+        "<span class="hljs-attribute">name</span>": <span class="hljs-value"><span class="hljs-string">"STM"</span></span>,
+        "<span class="hljs-attribute">factor</span>": <span class="hljs-value"><span class="hljs-string">"asr"</span>
+      </span>},
+      {
+        "<span class="hljs-attribute">name</span>": <span class="hljs-value"><span class="hljs-string">"STM"</span></span>,
+        "<span class="hljs-attribute">factor</span>": <span class="hljs-value"><span class="hljs-string">"asr"</span>
+      </span>}
+    ]
+  </span>},
+  {
     "<span class="hljs-attribute">id</span>": <span class="hljs-value"><span class="hljs-number">2</span></span>,
     "<span class="hljs-attribute">patient_id</span>": <span class="hljs-value"><span class="hljs-number">1</span></span>,
     "<span class="hljs-attribute">time</span>": <span class="hljs-value"><span class="hljs-string">"2017-03-05 00:00:00"</span></span>,
-    "<span class="hljs-attribute">product</span>": <span class="hljs-value"><span class="hljs-string">"OncoR"</span>;
-    <span class="hljs-string">"sampleID"</span>: <span class="hljs-string">"12XBD58"</span></span>,
+    "<span class="hljs-attribute">product</span>": <span class="hljs-value"><span class="hljs-string">"OncoR"</span></span>,
+    "<span class="hljs-attribute">sampleID</span>": <span class="hljs-value"><span class="hljs-string">"12XBD58"</span></span>,
     "<span class="hljs-attribute">disease</span>": <span class="hljs-value"><span class="hljs-string">"肠癌"</span></span>,
     "<span class="hljs-attribute">period</span>": <span class="hljs-value"><span class="hljs-string">"IV 期"</span></span>,
     "<span class="hljs-attribute">status</span>": <span class="hljs-value"><span class="hljs-string">"样本已入库"</span></span>,
-    "<span class="hljs-attribute">index</span>": <span class="hljs-value"><span class="hljs-string">"STM"</span></span>,
-    "<span class="hljs-attribute">factor</span>": <span class="hljs-value"><span class="hljs-string">"asr"</span>
-</span>}]</code></pre><div style="height: 1px;"></div></div></div></div></div></section></div></div></div><p style="text-align: center;" class="text-muted">Generated by&nbsp;<a href="https://github.com/danielgtaylor/aglio" class="aglio">aglio</a>&nbsp;on 01 Nov 2017</p><script>/* eslint-env browser */
+    "<span class="hljs-attribute">index</span>": <span class="hljs-value">[
+      {
+        "<span class="hljs-attribute">name</span>": <span class="hljs-value"><span class="hljs-string">"STM"</span></span>,
+        "<span class="hljs-attribute">factor</span>": <span class="hljs-value"><span class="hljs-string">"asr"</span>
+      </span>},
+      {
+        "<span class="hljs-attribute">name</span>": <span class="hljs-value"><span class="hljs-string">"STM"</span></span>,
+        "<span class="hljs-attribute">factor</span>": <span class="hljs-value"><span class="hljs-string">"asr"</span>
+      </span>}
+    ]
+  </span>}
+]</code></pre><div style="height: 1px;"></div></div></div></div></div></section></div></div></div><p style="text-align: center;" class="text-muted">Generated by&nbsp;<a href="https://github.com/danielgtaylor/aglio" class="aglio">aglio</a>&nbsp;on 17 Nov 2017</p><script>/* eslint-env browser */
 /* eslint quotes: [2, "single"] */
 'use strict';
 
