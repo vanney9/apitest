@@ -25,7 +25,7 @@
 <p>获取所有科研的样本信息</p>
 <ol>
 <li>research_id: 样本对应的科研项目的id</li>
-<li>report_id: 样本id，对应Report表中的id</li>
+<li>sample_id: 样本id，对应sample表中的id (V2版本新增字段)</li>
 <li>status: 该样本的状态：0表示已立项，1表示已入组，2表示已检测</li>
 </ol>
 </li>
@@ -34,7 +34,7 @@
   {
     "<span class="hljs-attribute">id</span>": <span class="hljs-value"><span class="hljs-number">1</span></span>,
     "<span class="hljs-attribute">doctor_id</span>": <span class="hljs-value"><span class="hljs-number">1</span></span>,
-    "<span class="hljs-attribute">time</span>": <span class="hljs-value"><span class="hljs-string">"2017-07-01 00:00:00"</span></span>,
+    "<span class="hljs-attribute">time</span>": <span class="hljs-value"><span class="hljs-string">"2017-03-04 00:00:00"</span></span>,
     "<span class="hljs-attribute">name</span>": <span class="hljs-value"><span class="hljs-string">"基因监测指标用于临床治疗的可用性研究"</span></span>,
     "<span class="hljs-attribute">progress</span>": <span class="hljs-value"><span class="hljs-string">"30%"</span></span>,
     "<span class="hljs-attribute">final_report</span>": <span class="hljs-value"><span class="hljs-string">"http://www.geneplus.com/jieti1.pdf"</span>
@@ -42,7 +42,7 @@
   {
     "<span class="hljs-attribute">id</span>": <span class="hljs-value"><span class="hljs-number">2</span></span>,
     "<span class="hljs-attribute">doctor_id</span>": <span class="hljs-value"><span class="hljs-number">1</span></span>,
-    "<span class="hljs-attribute">time</span>": <span class="hljs-value"><span class="hljs-string">"2017-07-01 00:00:00"</span></span>,
+    "<span class="hljs-attribute">time</span>": <span class="hljs-value"><span class="hljs-string">"2017-03-04 00:00:00"</span></span>,
     "<span class="hljs-attribute">name</span>": <span class="hljs-value"><span class="hljs-string">"基因监测指标用于临床治疗的可用性研究"</span></span>,
     "<span class="hljs-attribute">progress</span>": <span class="hljs-value"><span class="hljs-string">"50%"</span></span>,
     "<span class="hljs-attribute">final_report</span>": <span class="hljs-value"><span class="hljs-string">"http://www.geneplus.com/jieti2.pdf"</span>
@@ -79,25 +79,25 @@
 ]</code></pre><div style="height: 1px;"></div></div></div></div></div><div id="样本信息" class="resource"><h3 class="resource-heading">样本信息 <a href="#样本信息" class="permalink">&nbsp;&para;</a></h3><div id="样本信息-get" class="action get"><h4 class="action-heading"><div class="name">获取所有项目的样本信息(立项，入组，已检测)</div><a href="#样本信息-get" class="method get">GET</a><code class="uri">/report</code></h4><h4>Example URI</h4><div class="definition"><span class="method get">GET</span>&nbsp;<span class="uri"><span class="hostname">http://localhost/research</span>/report</span></div><div class="title"><strong>Response&nbsp;&nbsp;<code>200</code></strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span></code></pre><div style="height: 1px;"></div><h5>Body</h5><pre><code>[
   {
     "<span class="hljs-attribute">research_id</span>": <span class="hljs-value"><span class="hljs-number">1</span></span>,
-    "<span class="hljs-attribute">report_id</span>": <span class="hljs-value"><span class="hljs-number">1</span></span>,
+    "<span class="hljs-attribute">sample_id</span>": <span class="hljs-value"><span class="hljs-number">1</span></span>,
     "<span class="hljs-attribute">status</span>": <span class="hljs-value"><span class="hljs-number">0</span>
   </span>},
   {
     "<span class="hljs-attribute">research_id</span>": <span class="hljs-value"><span class="hljs-number">1</span></span>,
-    "<span class="hljs-attribute">report_id</span>": <span class="hljs-value"><span class="hljs-number">2</span></span>,
+    "<span class="hljs-attribute">sample_id</span>": <span class="hljs-value"><span class="hljs-number">2</span></span>,
     "<span class="hljs-attribute">status</span>": <span class="hljs-value"><span class="hljs-number">1</span>
   </span>},
   {
     "<span class="hljs-attribute">research_id</span>": <span class="hljs-value"><span class="hljs-number">2</span></span>,
-    "<span class="hljs-attribute">report_id</span>": <span class="hljs-value"><span class="hljs-number">1</span></span>,
+    "<span class="hljs-attribute">sample_id</span>": <span class="hljs-value"><span class="hljs-number">1</span></span>,
     "<span class="hljs-attribute">status</span>": <span class="hljs-value"><span class="hljs-number">3</span>
   </span>},
   {
     "<span class="hljs-attribute">research_id</span>": <span class="hljs-value"><span class="hljs-number">2</span></span>,
-    "<span class="hljs-attribute">report_id</span>": <span class="hljs-value"><span class="hljs-number">3</span></span>,
+    "<span class="hljs-attribute">sample_id</span>": <span class="hljs-value"><span class="hljs-number">3</span></span>,
     "<span class="hljs-attribute">status</span>": <span class="hljs-value"><span class="hljs-number">0</span>
   </span>}
-]</code></pre><div style="height: 1px;"></div></div></div></div></div></section></div></div></div><p style="text-align: center;" class="text-muted">Generated by&nbsp;<a href="https://github.com/danielgtaylor/aglio" class="aglio">aglio</a>&nbsp;on 18 Jan 2018</p><script>/* eslint-env browser */
+]</code></pre><div style="height: 1px;"></div></div></div></div></div></section></div></div></div><p style="text-align: center;" class="text-muted">Generated by&nbsp;<a href="https://github.com/danielgtaylor/aglio" class="aglio">aglio</a>&nbsp;on 20 Jan 2018</p><script>/* eslint-env browser */
 /* eslint quotes: [2, "single"] */
 'use strict';
 

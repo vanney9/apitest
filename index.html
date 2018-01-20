@@ -26,7 +26,19 @@
             <li><a href="./dynamicmclone.html">动态mClone</a></li>
             <li><a href="./dynamicmtbi.html">动态mTBI</a></li>
             <li><a href="./immunity.html">免疫组库</a></li>
+            <li><a href="./multicenterv2.html">多中心研究</a></li>
         </ul>
+        <h2>获取pdf的接口</h2>
+        localhost/getreport?reportid=1&type=0
+        <div>注意：
+        <ul>
+            <li>type:0 表示获取病人临床报告的pdf，reportid为报告id</li>
+            <li>type:1 表示获取科研项目汇报的pdf，reportid为汇报id</li>
+            <li>type:2 表示获取科研项目结题的pdf，reportid为科研项目id</li>
+            <li>type:3 表示获取多中心项目汇报的pdf，reportid为汇报id</li>
+            <li>type:4 表示获取多中心项目结题的pdf，reportid为多中心项目id</li>
+        </ul>
+        </div>
 		<div>
 			<h3 style="color: red;">注意</h3>
 			<p>每个API都是GET请求，通过时间戳来获取相应时间段的数据。每个GET请求会有2个参数：start_time 和 end_time。</p>
